@@ -290,3 +290,169 @@
 
 
 //  7
+
+// теория(Метод call)
+
+// // foo.call(obj, arg1, arg2, ...);
+// function greetGuest(greeting) {
+//   console.log(`${greeting}, ${this.username}.`);
+// }
+
+// const mango = { username: "Манго" };
+// const poly = { username: "Поли" };
+
+// greetGuest.call(mango, "Добро пожаловать");
+// // Добро пожаловать, Манго.
+
+// greetGuest.call(poly, "С приездом");
+// // С приездом, Поли.
+
+//  задача
+// const orders = [
+//   { email: 'solomon@topmail.ua', dish: 'Burger' },
+//   { email: 'artemis@coldmail.net', dish: 'Pizza' },
+//   { email: 'jacob@mail.com', dish: 'Taco' },
+// ];
+
+// // Пиши код ниже этой строки
+// function composeMessage(position) {
+// return `Готовим ${this.dish} для ${this.email}. Ваш заказ ${position}-й в очереди.`;
+// }
+
+// const messages = [];
+// for (let i = 0; i < orders.length; i += 1){
+// //   let order = orders[i];
+// //   let position = i + 1;
+// //   let result = composeMessage.call(order, position);
+//              //или
+//   let result = composeMessage.call(orders[i], i + 1);
+//   messages.push(result);
+// };
+// console.log(messages);
+
+//  8
+
+//  теория (Метод apply)
+// function greetGuest(greeting) {
+//   console.log(`${greeting}, ${this.username}.`);
+// }
+
+// const mango = { username: "Манго" };
+// const poly = { username: "Поли" };
+
+// greetGuest.apply(mango, ["Добро пожаловать"]); // Добро пожаловать, Манго.
+// greetGuest.apply(poly, ["С приездом"]); // С приездом, Поли.
+
+//  задача
+// const orders = [
+//   { email: "solomon@topmail.ua", dish: "Burger" },
+//   { email: "artemis@coldmail.net", dish: "Pizza" },
+//   { email: "jacob@mail.com", dish: "Taco" },
+// ];
+
+// // Пиши код ниже этой строки
+// function composeMessage(position) {
+//   return `Готовим ${this.dish} для ${this.email}. Ваш заказ ${position}-й в очереди.`;
+// }
+
+// const messages = [];
+// for (let i = 0; i < orders.length; i++) {
+//   const msg = composeMessage.apply(orders[i], [i + 1]);
+//   messages.push(msg);
+// }
+// console.log(messages);
+
+
+//  9
+//  теория (Метод bind)
+// function greet(clientName) {
+//   return `${clientName}, добро пожаловать в «${this.service}».`;
+// }
+
+// const steam = { service: 'Steam' };
+// const steamGreeter = greet.bind(steam);
+// steamGreeter('Манго')
+// console.log(steamGreeter('Манго')); // "Манго, добро пожаловать в «Steam»."
+
+// const gmail = { service: 'Gmail' };
+// const gmailGreeter = greet.bind(gmail);
+// gmailGreeter('Поли');
+// console.log(gmailGreeter('Поли')); // "Поли, добро пожаловать в «Gmail»."
+
+//  задача
+// const pizzaPalace = {
+//   company: 'Pizza Palace',
+// };
+
+// const burgerShack = {
+//   company: 'Burger Shack',
+// };
+
+// function composeMessage(customerName) {
+//   return `${customerName}, всегда рады вас видеть в «${this.company}».`;
+// }
+// // Пиши код ниже этой строки
+
+// const pizzaPalaceComposer = composeMessage.bind(pizzaPalace);
+// const pizzaPalaceMessage = pizzaPalaceComposer('Манго');
+
+// const burgerShackComposer = composeMessage.bind(burgerShack);
+// const burgerShackMessage = burgerShackComposer('Поли');
+
+// console.log(pizzaPalaceMessage);
+// console.log(burgerShackMessage);
+
+
+//  10
+//  теория (Метод bind и методы объекта)
+'use strict';
+// const customer = {
+//   firstName: 'Jacob',
+//   lastName: 'Mercer',
+//   getFullName() {
+//     return `${this.firstName} ${this.lastName}`;
+//   },
+// };
+
+// function makeMessage(callback) {
+//   // callback() это вызов метода getFullName без объекта
+//   console.log(`Обрабатываем заявку от ${callback()}.`);
+// }
+// // ❌ Было
+// // makeMessage(customer.getFullName); // Будет ошибка при вызове функции
+
+// // ✅ Стало
+// makeMessage(customer.getFullName.bind(customer)); // Обрабатываем заявку от Jacob Mercer.
+
+//  задача
+// const service = {
+//   mailingList: ['mango@mail.com', 'poly@hotmail.de', 'ajax@jmail.net'],
+//   subscribe(email) {
+//     this.mailingList.push(email);
+//     return `Почта ${email} добавлена в рассылку.`;
+//   },
+//   unsubscribe(email) {
+//     this.mailingList = this.mailingList.filter((e) => e !== email);
+//     return `Почта ${email} удалена из рассылки.`;
+//   },
+// };
+
+// function logAndInvokeAction(email, action) {
+//   console.log(`Выполняем действие с ${email}.`);
+//   return action(email);
+// }
+
+// const firstInvoke = logAndInvokeAction('kiwi@mail.uk', service.subscribe.bind(service));
+// console.log(firstInvoke);
+// // Почта kiwi@mail.uk добавлена в рассылку.
+
+// console.log(service.mailingList);
+// /* ['mango@mail.com', 
+//     'poly@hotmail.de', 
+//     'ajax@jmail.net', 
+//     'kiwi@mail.uk']*/
+// const secondInvoke = logAndInvokeAction('poly@hotmail.de', service.unsubscribe.bind(service));
+// console.log(secondInvoke);
+// // Почта poly@hotmail.de удалена из рассылки.
+
+// console.log(service.mailingList); // ['mango@mail.com', 'ajax@jmail.net', 'kiwi@mail.uk']
